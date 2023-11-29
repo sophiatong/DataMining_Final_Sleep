@@ -10,8 +10,8 @@ import os
 
 # Get EDF objects
 data_objects = []
-for f in os.listdir('data'):
-    data_objects.append(mne.io.read_raw_edf(f'data/{f}', verbose='CRITICAL'))
+for f in os.listdir('data_rec'):
+    data_objects.append(mne.io.read_raw_edf(f'data_rec/{f}', verbose='CRITICAL'))
 
 # Make directory for storing the files if not already present
 if not os.path.isdir('csv_rec_files'):
