@@ -1,4 +1,6 @@
+data
 *.rec
 *.edf
 *.gzip
-
+*.xls
+*.csv
