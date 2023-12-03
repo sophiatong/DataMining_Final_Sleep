@@ -40,6 +40,7 @@ class SleepDataSet(Dataset):
     def _load_data_and_merge(self, patient_id):
         respevt_df = self._read_respevt_txt_to_df(f"files/ucddb{patient_id:03}_respevt.txt")
         respevt_df['Time'] = respevt_df['Time'].dt.total_seconds()
+        respevt_df = respevt_df.sort_values("Time")
 
         path_id = self._get_path_id(patient_id)
         edf_rec_df = pd.read_parquet(self._get_path(path_id))
@@ -237,7 +238,7 @@ class SleepDataModule(L.LightningDataModule):
             val_ids = []
             for i in range(self.n_train + self.n_val):
                 patient_idx = self.patient_order[i]
-                patient_id = self.patient_id[patient_idx]
+                patient_id = self.patient_ids[patient_idx]
                 if i < self.n_train:
                     train_ids.append(patient_id)
                 else:
