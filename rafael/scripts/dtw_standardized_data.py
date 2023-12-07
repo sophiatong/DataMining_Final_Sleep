@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 '''
-Script to calculate DTW data from patients.
+Script to calculate standardized DTW data from patients.
 '''
 from concurrent.futures import ProcessPoolExecutor, wait
 from sklearn.preprocessing import StandardScaler
@@ -15,7 +15,7 @@ import os
 
 # Define vars of interest and list of pairs
 vars_of_interest = ['C3A2', 'abdo', 'Flow', 'Sum', 'Pulse', 'RightEye', 'C4A1', 'SpO2', 'BodyPos', 'ribcage', 'EMG', 'ECG', 'Lefteye']
-pair_iter = list(combinations(vars_of_interest, 2))
+var_pairs = list(combinations(vars_of_interest, 2))
 
 # Manhattan distance function for DTW
 manhattan_distance = lambda x, y: abs(x - y)
@@ -60,7 +60,7 @@ for patient, f in tqdm(enumerate(os.listdir('data'))):
     # Instantiate multiprocessing executor
     with ProcessPoolExecutor(12) as executor:
         # Get DTW distances
-        futures = [executor.submit(partial(calculate_dtw, i, j)) for i,j in pair_iter]
+        futures = [executor.submit(partial(calculate_dtw, i, j)) for i,j in var_pairs]
 
         # Wait for all calculations to finish
         done, not_done = wait(futures)
